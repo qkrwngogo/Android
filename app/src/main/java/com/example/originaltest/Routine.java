@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +22,8 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.intellij.lang.annotations.Identifier;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +35,10 @@ public class Routine extends Fragment {
     // 회원가입 탭 (약관 동의, 텍스트)
     CheckBox all_agree_box, agree_terms, agree_personal_info;
     TextView email, password, retype_password, name, cellphone, birth_date;
+    // gmail 정규식
     String emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+    // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
+    String passwordValidation = "^(?=.*[a-zA-Z0-9])(?=.*[a-zA-Z!@#$%^&*])(?=.*[0-9!@#$%^&*]).{8,15}$";
     Button submit;
     // 로그인 모달 창
     Dialog dialog;
@@ -91,7 +98,7 @@ public class Routine extends Fragment {
      * 로그인 여부 확인
      * @param option
      */
-    private void isLogined (Boolean option) {
+    public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
         } else {
@@ -117,29 +124,10 @@ public class Routine extends Fragment {
             birth_date = dialog.findViewById(R.id.birth_date);
             email = dialog.findViewById(R.id.email);
             submit = dialog.findViewById(R.id.submit);
-            // ▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽ 떡 코딩, 추후에 능지 상승 시 수정할것▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽▽
 
-            // 6글자 이상 , @gmail로 끝나는지 확인
-            email.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String inputEmail = email.getText().toString().trim();
-                    if(inputEmail.matches(emailValidation)&& s.length() > 15) {
-                        email.setBackgroundColor(Color.TRANSPARENT);
-                    } else {
-                        email.setBackgroundColor(Color.GRAY);
-                        submit.setClickable(false);
-                    }
-                }
-            });
+            email.addTextChangedListener(new GenericTextWatcher(email));
+            password.addTextChangedListener(new GenericTextWatcher(password));
 
-            // △△△△△△△△△△△△△△△△△△ 떡 코딩, 추후에 능지 상승 시 수정할것△△△△△△△△△△△△△△△△△△
             all_agree_box = dialog.findViewById(R.id.agree_all_terms);
             agree_terms = dialog.findViewById(R.id.agree_terms);
             agree_personal_info = dialog.findViewById(R.id.agree_personal_info);
@@ -159,7 +147,7 @@ public class Routine extends Fragment {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 // 달력 시작을 현재 날짜로 설정
-                datePickerDialog = new DatePickerDialog(getActivity(), dataPickerListener, year, month, day);
+                datePickerDialog = new DatePickerDialog(getContext(), dataPickerListener, year, month, day);
                 datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());;
                 datePickerDialog.show();
             });
@@ -192,12 +180,72 @@ public class Routine extends Fragment {
     /**
      * 회원가입 정보 일치 확인 알고리즘
      */
-    private void signUpCheck() {
+    private class GenericTextWatcher implements TextWatcher {
+        private View view;
+        private GenericTextWatcher(View view) {
+            this.view = view;
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            switch(view.getId()) {
+                // email이 gmail로 끝나는 지, 또한 6글자 이상인지 확인식
+                case R.id.email:
+                    discriminant(email);
+                    break;
+                // 비밀번호가 6자 이상인지 확인식
+                case R.id.password:
+                    discriminant(password);
+                    break;
+            }
 
 
+        }
 
 
 
     }
+    /**
+     *  회원가입 양식 기입 판별식
+     */
+    public void discriminant(TextView textView) {
+        // EditText 내용
+        Editable s = textView.getEditableText();
+        // s의 길이 제한
+        int i;
+        // TextView의 정규식
+        String validation;
+        String input = textView.getText().toString().trim();
+        switch (textView.getId()) {
+            case R.id.email:
+                validation = emailValidation;
+                i = 15;
+                break;
+            case R.id.password:
+                validation = passwordValidation;
+                i = 8;
+                break;
+            default:
+                i = 0;
+                validation = null;
+        }
+        // 정규식에 맞으며 최소 길이 제한을 충족 시키는지 화인
+        if(input.matches(validation) && s.length() > i) {
+            textView.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            textView.setBackgroundColor(Color.GRAY);
+            submit.setClickable(false);
+        }
+    }
+
+
+
 
 }
