@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Routine extends Fragment {
     // 설문조사 탭 (나이, 생일, 달력 창)
@@ -30,14 +33,12 @@ public class Routine extends Fragment {
     DatePickerDialog datePickerDialog;
     // 회원가입 탭 (약관 동의, 텍스트)
     CheckBox all_agree_box, agree_terms, agree_personal_info;
-    TextView email, password, retype_password, name, cellphone, birth_date;
-    // gmail 정규식
-    String emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
-    // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
-    String passwordValidation = "^(?=.*[a-zA-Z0-9])(?=.*[a-zA-Z!@#$%^&*])(?=.*[0-9!@#$%^&*]).{8,15}$";
+    TextView email, password, retype_password, name, nick_name, birth_date;
+
     Button submit;
     // 로그인 모달 창
     Dialog dialog;
+
     public static Routine newInstance () {
         return new Routine();
     }
@@ -69,6 +70,7 @@ public class Routine extends Fragment {
             c.set(Calendar.MONTH, month);
             c.set(Calendar.DAY_OF_MONTH, day);
             AgeView.setText(Integer.toString(calculateAge(c.getTimeInMillis())));
+            birth_date.setText((month + 1) + "/" + day + "/" + year);
             birthDateView.setText((month + 1) + "/" + day + "/" + year);
         }
     };
@@ -113,14 +115,24 @@ public class Routine extends Fragment {
             password = dialog.findViewById(R.id.password);
             retype_password = dialog.findViewById(R.id.retype_password);
             name = dialog.findViewById(R.id.name);
-            cellphone = dialog.findViewById(R.id.cellphone);
+            nick_name = dialog.findViewById(R.id.nick_name);
             birth_date = dialog.findViewById(R.id.birth_date);
             email = dialog.findViewById(R.id.email);
             submit = dialog.findViewById(R.id.submit);
 
             email.addTextChangedListener(new GenericTextWatcher(email));
             password.addTextChangedListener(new GenericTextWatcher(password));
+            name.addTextChangedListener(new GenericTextWatcher(name));
+            nick_name.addTextChangedListener(new GenericTextWatcher(nick_name));
+            birth_date.addTextChangedListener(new GenericTextWatcher(birth_date));
 
+
+            retype_password.setOnFocusChangeListener((v, hasFocus) -> {
+                // 비밀번호 재입력이 포커스일 때
+                if(!hasFocus) {
+                    setCorrectStyle(retype_password, password.getText().toString().equals(retype_password.getText().toString()));
+                }
+            });
             all_agree_box = dialog.findViewById(R.id.agree_all_terms);
             agree_terms = dialog.findViewById(R.id.agree_terms);
             agree_personal_info = dialog.findViewById(R.id.agree_personal_info);
@@ -178,6 +190,8 @@ public class Routine extends Fragment {
         }
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            submit.setClickable(false);
+            submit.setBackgroundResource(R.drawable.custom_button_wrong);
         }
 
         @Override
@@ -189,54 +203,70 @@ public class Routine extends Fragment {
             switch(view.getId()) {
                 // email이 gmail로 끝나는 지, 또한 6글자 이상인지 확인식
                 case R.id.email:
-                    discriminant(email);
+                    discriminant((EditText) email);
                     break;
                 // 비밀번호가 6자 이상인지 확인식
                 case R.id.password:
-                    discriminant(password);
+                    discriminant((EditText) password);
                     break;
+                case R.id.name:
+                    discriminant((EditText) name);
+                    break;
+                case R.id.nick_name:
+                    discriminant((EditText) nick_name);
+                case R.id.birth_date:
+                    discriminant((EditText) birth_date);
             }
-
-
         }
-
-
-
     }
+
     /**
      *  회원가입 양식 기입 판별식
      */
-    public void discriminant(TextView textView) {
+    public void discriminant(EditText editText) {
+        // gmail 정규식
+        final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+        // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
+        final String PASSWORD_VALIDATION = "^" +
+                "(?=.*[!@#$%^&+=])" +     // 최소 1개 이상 특수문자
+                "(?=\\S+$)" +            // 스페이스 금지
+                ".{4,}" +                // 4자 이상
+                "$";
+        // 이름 정규식, 영어
+        final String NAME_VALIDATION = "^[a-zA-Z]*$";
+        Pattern pattern;
+        Matcher matcher;
+
+        // EditText 내용의 길이
+        Editable s = editText.getEditableText();
         // EditText 내용
-        Editable s = textView.getEditableText();
-        // s의 길이 제한
-        int i;
-        // TextView의 정규식
-        String validation;
-        String input = textView.getText().toString().trim();
-        switch (textView.getId()) {
+        String input = editText.getText().toString().trim();
+        switch (editText.getId()) {
             case R.id.email:
-                validation = emailValidation;
-                i = 15;
+                setCorrectStyle(editText, input.matches(EMAIL_VALIDATION) && s.length() > 15);
                 break;
             case R.id.password:
-                validation = passwordValidation;
-                i = 8;
+                // 비밀 번호 정규식을 비교
+                pattern = Pattern.compile(PASSWORD_VALIDATION);
+                matcher = pattern.matcher(input);
+                setCorrectStyle(editText, matcher.matches());
                 break;
-            default:
-                i = 0;
-                validation = null;
-        }
-        // 정규식에 맞으며 최소 길이 제한을 충족 시키는지 화인
-        if(input.matches(validation) && s.length() > i) {
-            textView.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            textView.setBackgroundColor(Color.GRAY);
-            submit.setClickable(false);
+            case R.id.name:
+            case R.id.nick_name:
+                // 이름 정규식 비교 (3글자 이상)
+                setCorrectStyle(editText,input.matches(NAME_VALIDATION) && s.length() > 2);
+                break;
+            case R.id.birth_date:
+                setCorrectStyle(editText, input != null);
         }
     }
-
-
-
-
+    public void setCorrectStyle (TextView textView, Boolean isCorrect) {
+        if (isCorrect) {
+            textView.setBackgroundResource(R.drawable.custom_underline_correct);
+            submit.setClickable(true);
+            submit.setBackgroundResource(R.drawable.custom_button_submit);
+        } else {
+            textView.setBackgroundResource(R.drawable.custom_underline_wrong);
+        }
+    }
 }

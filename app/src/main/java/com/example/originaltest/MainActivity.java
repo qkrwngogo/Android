@@ -1,16 +1,15 @@
 package com.example.originaltest;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
@@ -38,20 +37,9 @@ public class MainActivity extends AppCompatActivity {
         homeBtn.setOnClickListener(v -> bottomBar.selectTabById(R.id.nav_routine, true));
         // Menu Button
 
-    }
-    // fragment 호출 함수
-    public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.modal, fragment);
+
+
     }
 
-    // 버튼 표시 여부
-    public void buttonVisibilityChange(ImageButton imageButton) {
-        if (imageButton.getVisibility()==View.GONE) {
-            imageButton.setVisibility(View.VISIBLE);
-        } else {
-            imageButton.setVisibility(View.GONE);
-        }
-    }
+
 }

@@ -12,4 +12,5 @@
     <color name="disabled_color">#B0CAEC</color>
     <color name="focus_color">#1E385A</color>
     <color name="highlight_color">#6546B3</color>
+    <color name="wrong">#E74A3B</color>
 </resources>
