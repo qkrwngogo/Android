@@ -1,5 +1,6 @@
 package com.example.originaltest;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
@@ -8,22 +9,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import org.intellij.lang.annotations.Identifier;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -42,26 +38,21 @@ public class Routine extends Fragment {
     Button submit;
     // 로그인 모달 창
     Dialog dialog;
-    String format;
     public static Routine newInstance () {
-        Routine routine = new Routine();
-        return routine;
+        return new Routine();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_routine, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_routine, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
         Button routineBtn = getView().findViewById(R.id.routine);
-        routineBtn.setOnClickListener(v -> {
-            isLogined(false);
-        });
+        routineBtn.setOnClickListener(v -> isLogined(false));
     }
     // TextView 변경 실시간 화
     public void InitializeView() {
@@ -70,6 +61,7 @@ public class Routine extends Fragment {
     }
     // 달력 클릭 시 TextView에 값 전달
     public DatePickerDialog.OnDateSetListener dataPickerListener = new DatePickerDialog.OnDateSetListener() {
+        @SuppressLint("SetTextI18n")
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
             Calendar c = Calendar.getInstance();
@@ -101,6 +93,7 @@ public class Routine extends Fragment {
     public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
+
         } else {
             // 로그인 안되어있는 경우
             // 모달창 내부 버튼 설정
@@ -131,9 +124,9 @@ public class Routine extends Fragment {
             all_agree_box = dialog.findViewById(R.id.agree_all_terms);
             agree_terms = dialog.findViewById(R.id.agree_terms);
             agree_personal_info = dialog.findViewById(R.id.agree_personal_info);
-            all_agree_box.setOnClickListener(v -> {onCheckChanged((CheckBox)v);});
-            agree_terms.setOnClickListener(v -> {onCheckChanged((CheckBox)v);});
-            agree_personal_info.setOnClickListener(v -> {onCheckChanged((CheckBox)v);});
+            all_agree_box.setOnClickListener(v -> onCheckChanged((CheckBox)v));
+            agree_terms.setOnClickListener(v -> onCheckChanged((CheckBox)v));
+            agree_personal_info.setOnClickListener(v -> onCheckChanged((CheckBox)v));
             all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
 
             // 설문조사 탭 (임시 보류)
@@ -148,7 +141,7 @@ public class Routine extends Fragment {
 
                 // 달력 시작을 현재 날짜로 설정
                 datePickerDialog = new DatePickerDialog(getContext(), dataPickerListener, year, month, day);
-                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());;
+                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
                 datePickerDialog.show();
             });
             // 닫기 버튼 클릭시 화면 닫힘
@@ -163,25 +156,23 @@ public class Routine extends Fragment {
      * @param checkBox
      */
     private void onCheckChanged(CheckBox checkBox) {
-        switch(checkBox.getId()) {
-            case R.id.agree_all_terms :
-                if(all_agree_box.isChecked()) {
-                    agree_terms.setChecked(true);
-                    agree_personal_info.setChecked(true);
-                } else {
-                    agree_terms.setChecked(false);
-                    agree_personal_info.setChecked(false);
-                }
-            default:
-                all_agree_box.setChecked(agree_terms.isChecked()&&agree_personal_info.isChecked());
+        if (checkBox.getId() == R.id.agree_all_terms) {
+            if (all_agree_box.isChecked()) {
+                agree_terms.setChecked(true);
+                agree_personal_info.setChecked(true);
+            } else {
+                agree_terms.setChecked(false);
+                agree_personal_info.setChecked(false);
+            }
         }
+        all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
     }
 
     /**
      * 회원가입 정보 일치 확인 알고리즘
      */
     private class GenericTextWatcher implements TextWatcher {
-        private View view;
+        private final View view;
         private GenericTextWatcher(View view) {
             this.view = view;
         }
