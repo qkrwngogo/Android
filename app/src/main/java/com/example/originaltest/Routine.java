@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -96,6 +97,7 @@ public class Routine extends Fragment {
      * 로그인 여부 확인
      * @param option : 로그인 여부
      */
+    @SuppressLint("ClickableViewAccessibility")
     public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
@@ -152,6 +154,12 @@ public class Routine extends Fragment {
             agree_personal_info.setOnClickListener(v -> onCheckChanged((CheckBox)v));
             all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
 
+            if (all_agree_box.isChecked()) {
+                submit.setBackgroundResource(R.drawable.custom_button_submit);
+                submit.setClickable(true);
+            }
+
+
             // 설문조사 탭 (임시 보류)
             InitializeView();
             // birthDate 버튼 클릭 시 달력 호출
@@ -167,13 +175,18 @@ public class Routine extends Fragment {
                 datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
                 datePickerDialog.show();
             });
+            // 화면 클릭 시 키보드 닫힘
+            dialog.findViewById(R.id.sign_up_page).setOnTouchListener((v, event) -> {
+                v.clearFocus();
+                closeKeyboard();
+                return false;
+            });
             // 닫기 버튼 클릭시 화면 닫힘
             ImageView closeBtn = dialog.findViewById(R.id.close);
             closeBtn.setOnClickListener(v12 -> dialog.dismiss());
             dialog.show();
         }
     }
-
 
     /**
      * 회원가입 정보 일치 확인 알고리즘
@@ -323,7 +336,7 @@ public class Routine extends Fragment {
 
     public void closeKeyboard(){
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        inputMethodManager.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
     }
 
 
