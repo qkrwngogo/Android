@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +40,19 @@ public class Routine extends Fragment {
     // 회원가입 탭 (약관 동의, 텍스트)
     CheckBox all_agree_box, agree_terms, agree_personal_info;
     TextView email, password, retype_password, name, nick_name, birth_date;
-
+    // gmail 정규식
+    // final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+    final String EMAIL_VALIDATION = "^[a-z]*$";
+    // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
+    final String PASSWORD_VALIDATION = "^" +
+            "(?=.*[!@#$%^&+=])" +     // 최소 1개 이상 특수문자
+            "(?=\\S+$)" +            // 스페이스 금지
+            ".{4,}" +                // 4자 이상
+            "$";
+    // 이름 정규식, 영어
+    final String NAME_VALIDATION = "^[a-zA-Z]*$";
+    Pattern pattern;
+    Matcher matcher;
     Button double_check, submit;
     // 로그인 모달 창
     Dialog dialog;
@@ -143,6 +156,7 @@ public class Routine extends Fragment {
             retype_password.setOnFocusChangeListener((v, hasFocus) -> {
                 if(!hasFocus && !password.getText().toString().equals("")) {
                     setCorrectStyle(retype_password, password.getText().toString().equals(retype_password.getText().toString()));
+                    buttonVisible();
                 }
             });
 
@@ -153,11 +167,6 @@ public class Routine extends Fragment {
             agree_terms.setOnClickListener(v -> onCheckChanged((CheckBox)v));
             agree_personal_info.setOnClickListener(v -> onCheckChanged((CheckBox)v));
             all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
-
-            if (all_agree_box.isChecked()) {
-                submit.setBackgroundResource(R.drawable.custom_button_submit);
-                submit.setClickable(true);
-            }
 
 
             // 설문조사 탭 (임시 보류)
@@ -175,6 +184,7 @@ public class Routine extends Fragment {
                 datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
                 datePickerDialog.show();
             });
+
             // 화면 클릭 시 키보드 닫힘
             dialog.findViewById(R.id.sign_up_page).setOnTouchListener((v, event) -> {
                 v.clearFocus();
@@ -200,15 +210,18 @@ public class Routine extends Fragment {
         }
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            buttonVisible();
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            buttonVisible();
         }
 
         @SuppressLint("NonConstantResourceId")
         @Override
         public void afterTextChanged(Editable s) {
+            buttonVisible();
             switch(view.getId()) {
                 // email이 gmail로 끝나는 지, 또한 6글자 이상인지 확인식
                 case R.id.email:
@@ -239,19 +252,7 @@ public class Routine extends Fragment {
      */
     @SuppressLint("NonConstantResourceId")
     public void discriminant(EditText editText) {
-        // gmail 정규식
-        // final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
-        final String EMAIL_VALIDATION = "^[a-z]*$";
-        // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
-        final String PASSWORD_VALIDATION = "^" +
-                "(?=.*[!@#$%^&+=])" +     // 최소 1개 이상 특수문자
-                "(?=\\S+$)" +            // 스페이스 금지
-                ".{4,}" +                // 4자 이상
-                "$";
-        // 이름 정규식, 영어
-        final String NAME_VALIDATION = "^[a-zA-Z]*$";
-        Pattern pattern;
-        Matcher matcher;
+
         String input = editText.getText().toString().trim();
         // EditText 내용의 길이
         Editable s = editText.getEditableText();
@@ -327,17 +328,29 @@ public class Routine extends Fragment {
             }
         }
         all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
+        buttonVisible();
     }
 
-    public void showKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public void closeKeyboard(){
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+    // 키보드 숨기기기
+   public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
     }
+
+    public void buttonVisible() {
+        boolean email_verified, password_verified, name_verified, nick_name_verified, birth_date_verifed;
+        email_verified = email.getText().toString().trim().matches(EMAIL_VALIDATION) && email.getEditableText().length() > 5;
+        password_verified = !password.getText().toString().equals("") && password.getText().toString().equals(retype_password.getText().toString());
+        name_verified = name.getText().toString().trim().matches(NAME_VALIDATION) && name.getEditableText().length() > 2;
+        nick_name_verified = nick_name.getText().toString().trim().matches(NAME_VALIDATION) && nick_name.getEditableText().length() > 2;
+        birth_date_verifed = !birth_date.getText().toString().trim().equals("");
+        if ( email_verified && password_verified && name_verified && nick_name_verified && birth_date_verifed && agree_terms.isChecked() && agree_personal_info.isChecked()) {
+            submit.setBackgroundResource(R.drawable.custom_button_submit);
+        } else {
+            submit.setBackgroundResource(R.drawable.custom_button_wrong);
+        }
+    }
+
 
 
 
