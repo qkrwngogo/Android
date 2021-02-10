@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class Routine extends Fragment {
     CheckBox all_agree_box, agree_terms, agree_personal_info;
     TextView email, password, retype_password, name, nick_name, birth_date;
 
-    Button submit;
+    Button double_check, submit;
     // 로그인 모달 창
     Dialog dialog;
 
@@ -52,7 +54,7 @@ public class Routine extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
-        Button routineBtn = getView().findViewById(R.id.routine);
+        Button routineBtn = requireView().findViewById(R.id.routine);
         routineBtn.setOnClickListener(v -> isLogined(false));
     }
     // TextView 변경 실시간 화
@@ -88,9 +90,10 @@ public class Routine extends Fragment {
         return age;
     }
 
+
     /**
      * 로그인 여부 확인
-     * @param option
+     * @param option : 로그인 여부
      */
     public void isLogined (Boolean option) {
         if(option) {
@@ -101,6 +104,7 @@ public class Routine extends Fragment {
             // 모달창 내부 버튼 설정
             dialog = new Dialog(getContext());
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             dialog.setContentView(R.layout.style_login);
             // 회원 가입 버튼 클릭시 창 이동
             Button signUpBtn = dialog.findViewById(R.id.btn_sign_up);
@@ -118,21 +122,21 @@ public class Routine extends Fragment {
             nick_name = dialog.findViewById(R.id.nick_name);
             birth_date = dialog.findViewById(R.id.birth_date);
             email = dialog.findViewById(R.id.email);
+            double_check = dialog.findViewById(R.id.btn_double_check);
             submit = dialog.findViewById(R.id.submit);
-
             email.addTextChangedListener(new GenericTextWatcher(email));
             password.addTextChangedListener(new GenericTextWatcher(password));
             name.addTextChangedListener(new GenericTextWatcher(name));
             nick_name.addTextChangedListener(new GenericTextWatcher(nick_name));
             birth_date.addTextChangedListener(new GenericTextWatcher(birth_date));
 
-
             retype_password.setOnFocusChangeListener((v, hasFocus) -> {
-                // 비밀번호 재입력이 포커스일 때
-                if(!hasFocus) {
+                // 비밀번호 재입력이 포커스 아웃 했을 때 비밀번호가 공백이 아닐 경우
+                if(!hasFocus && !password.getText().toString().equals("")) {
                     setCorrectStyle(retype_password, password.getText().toString().equals(retype_password.getText().toString()));
                 }
             });
+
             all_agree_box = dialog.findViewById(R.id.agree_all_terms);
             agree_terms = dialog.findViewById(R.id.agree_terms);
             agree_personal_info = dialog.findViewById(R.id.agree_personal_info);
@@ -165,7 +169,7 @@ public class Routine extends Fragment {
 
     /**
      * 약관 동의 알고리즘
-     * @param checkBox
+     * @param checkBox : 약관 동의
      */
     private void onCheckChanged(CheckBox checkBox) {
         if (checkBox.getId() == R.id.agree_all_terms) {
@@ -190,14 +194,13 @@ public class Routine extends Fragment {
         }
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            submit.setClickable(false);
-            submit.setBackgroundResource(R.drawable.custom_button_wrong);
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
 
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void afterTextChanged(Editable s) {
             switch(view.getId()) {
@@ -209,13 +212,18 @@ public class Routine extends Fragment {
                 case R.id.password:
                     discriminant((EditText) password);
                     break;
+                // 이름이 3글자 이상인지 확인식
                 case R.id.name:
                     discriminant((EditText) name);
                     break;
+                // 별명이 3글자 이상이지 확인식
                 case R.id.nick_name:
                     discriminant((EditText) nick_name);
+                    break;
+                // 생일이 공백이 아닌지 확인식
                 case R.id.birth_date:
                     discriminant((EditText) birth_date);
+                    break;
             }
         }
     }
@@ -223,6 +231,7 @@ public class Routine extends Fragment {
     /**
      *  회원가입 양식 기입 판별식
      */
+    @SuppressLint("NonConstantResourceId")
     public void discriminant(EditText editText) {
         // gmail 정규식
         final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
@@ -236,37 +245,57 @@ public class Routine extends Fragment {
         final String NAME_VALIDATION = "^[a-zA-Z]*$";
         Pattern pattern;
         Matcher matcher;
-
+        String input = editText.getText().toString().trim();
         // EditText 내용의 길이
         Editable s = editText.getEditableText();
         // EditText 내용
-        String input = editText.getText().toString().trim();
+        pattern = Pattern.compile(PASSWORD_VALIDATION);
+        matcher = pattern.matcher(input);
+        boolean email_verify, password_verify, name_verify, birth_date_verify;
+        // Email 정규식을 비교
+        email_verify = input.matches(EMAIL_VALIDATION) && s.length() > 15;
+        // 비밀 번호 정규식을 비교
+        password_verify = matcher.matches();
+        // 이름 정규식 비교 (3글자 이상)
+        name_verify = input.matches(NAME_VALIDATION) && s.length() > 2;
+        birth_date_verify = !input.equals("");
+
         switch (editText.getId()) {
             case R.id.email:
-                setCorrectStyle(editText, input.matches(EMAIL_VALIDATION) && s.length() > 15);
+                setCorrectStyle(editText, email_verify);
                 break;
             case R.id.password:
-                // 비밀 번호 정규식을 비교
-                pattern = Pattern.compile(PASSWORD_VALIDATION);
-                matcher = pattern.matcher(input);
-                setCorrectStyle(editText, matcher.matches());
+                setCorrectStyle(editText, password_verify);
                 break;
             case R.id.name:
             case R.id.nick_name:
-                // 이름 정규식 비교 (3글자 이상)
-                setCorrectStyle(editText,input.matches(NAME_VALIDATION) && s.length() > 2);
+                setCorrectStyle(editText,name_verify);
                 break;
             case R.id.birth_date:
-                setCorrectStyle(editText, input != null);
+                setCorrectStyle(editText, birth_date_verify);
+                break;
         }
+        if(email_verify && password_verify && name_verify && birth_date_verify)
+            buttonClickable();
+
     }
     public void setCorrectStyle (TextView textView, Boolean isCorrect) {
         if (isCorrect) {
+            // 조건 충족 시 초록색 밑선
             textView.setBackgroundResource(R.drawable.custom_underline_correct);
-            submit.setClickable(true);
-            submit.setBackgroundResource(R.drawable.custom_button_submit);
-        } else {
+            // 공백일 경우 (입력 후 지웠을 경우 포함) 기존 밑선
+        } else if(textView.getText().toString().equals("")) {
+            textView.setBackgroundResource(R.drawable.custom_underline);
+            // 조건 불충족 시 빨간색 밑선
+        }else {
             textView.setBackgroundResource(R.drawable.custom_underline_wrong);
         }
     }
+
+    public void buttonClickable() {
+            submit.setClickable(true);
+            submit.setBackgroundResource(R.drawable.custom_button_submit);
+    }
+
+
 }
