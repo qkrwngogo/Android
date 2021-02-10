@@ -3,6 +3,7 @@ package com.example.originaltest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -21,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
@@ -30,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Routine extends Fragment {
+
     // 설문조사 탭 (나이, 생일, 달력 창)
     TextView AgeView, birthDateView;
     DatePickerDialog datePickerDialog;
@@ -90,7 +92,6 @@ public class Routine extends Fragment {
         return age;
     }
 
-
     /**
      * 로그인 여부 확인
      * @param option : 로그인 여부
@@ -98,7 +99,6 @@ public class Routine extends Fragment {
     public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
-
         } else {
             // 로그인 안되어있는 경우
             // 모달창 내부 버튼 설정
@@ -114,7 +114,6 @@ public class Routine extends Fragment {
                 View signUpPage = dialog.findViewById(R.id.sign_up_page);
                 signUpPage.setVisibility(View.VISIBLE);
             });
-
             // 회원 가입 창 확인식
             password = dialog.findViewById(R.id.password);
             retype_password = dialog.findViewById(R.id.retype_password);
@@ -124,14 +123,22 @@ public class Routine extends Fragment {
             email = dialog.findViewById(R.id.email);
             double_check = dialog.findViewById(R.id.btn_double_check);
             submit = dialog.findViewById(R.id.submit);
+
             email.addTextChangedListener(new GenericTextWatcher(email));
             password.addTextChangedListener(new GenericTextWatcher(password));
             name.addTextChangedListener(new GenericTextWatcher(name));
             nick_name.addTextChangedListener(new GenericTextWatcher(nick_name));
             birth_date.addTextChangedListener(new GenericTextWatcher(birth_date));
 
+            // 비밀번호 입력 창을 수정한 뒤 포커스 아웃 할 때 다시 비교
+            password.setOnFocusChangeListener((v, hasFocus) -> {
+                if(!hasFocus && !password.getText().toString().equals("")) {
+                    setCorrectStyle(retype_password, password.getText().toString().equals(retype_password.getText().toString()));
+                }
+            });
+
+            // 비밀번호 재입력이 포커스 아웃 했을 때 비밀번호가 공백이 아닐 경우
             retype_password.setOnFocusChangeListener((v, hasFocus) -> {
-                // 비밀번호 재입력이 포커스 아웃 했을 때 비밀번호가 공백이 아닐 경우
                 if(!hasFocus && !password.getText().toString().equals("")) {
                     setCorrectStyle(retype_password, password.getText().toString().equals(retype_password.getText().toString()));
                 }
@@ -167,28 +174,14 @@ public class Routine extends Fragment {
         }
     }
 
-    /**
-     * 약관 동의 알고리즘
-     * @param checkBox : 약관 동의
-     */
-    private void onCheckChanged(CheckBox checkBox) {
-        if (checkBox.getId() == R.id.agree_all_terms) {
-            if (all_agree_box.isChecked()) {
-                agree_terms.setChecked(true);
-                agree_personal_info.setChecked(true);
-            } else {
-                agree_terms.setChecked(false);
-                agree_personal_info.setChecked(false);
-            }
-        }
-        all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
-    }
 
     /**
      * 회원가입 정보 일치 확인 알고리즘
      */
+
     private class GenericTextWatcher implements TextWatcher {
         private final View view;
+
         private GenericTextWatcher(View view) {
             this.view = view;
         }
@@ -234,7 +227,8 @@ public class Routine extends Fragment {
     @SuppressLint("NonConstantResourceId")
     public void discriminant(EditText editText) {
         // gmail 정규식
-        final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+        // final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+        final String EMAIL_VALIDATION = "^[a-z]*$";
         // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
         final String PASSWORD_VALIDATION = "^" +
                 "(?=.*[!@#$%^&+=])" +     // 최소 1개 이상 특수문자
@@ -251,15 +245,16 @@ public class Routine extends Fragment {
         // EditText 내용
         pattern = Pattern.compile(PASSWORD_VALIDATION);
         matcher = pattern.matcher(input);
+        // 확인식
         boolean email_verify, password_verify, name_verify, birth_date_verify;
-        // Email 정규식을 비교
-        email_verify = input.matches(EMAIL_VALIDATION) && s.length() > 15;
-        // 비밀 번호 정규식을 비교
+        // Email 유효성 검사
+        email_verify = input.matches(EMAIL_VALIDATION) && s.length() > 5;
+        // 비밀 번호 유효성 검사
         password_verify = matcher.matches();
-        // 이름 정규식 비교 (3글자 이상)
+        // 이름 유효성 검사
         name_verify = input.matches(NAME_VALIDATION) && s.length() > 2;
+        // 생년월일 유효성 검사
         birth_date_verify = !input.equals("");
-
         switch (editText.getId()) {
             case R.id.email:
                 setCorrectStyle(editText, email_verify);
@@ -268,34 +263,69 @@ public class Routine extends Fragment {
                 setCorrectStyle(editText, password_verify);
                 break;
             case R.id.name:
+                setCorrectStyle(editText,name_verify);
+                break;
             case R.id.nick_name:
                 setCorrectStyle(editText,name_verify);
+                if (name_verify) {
+                    double_check.setBackgroundResource(R.drawable.custom_button_submit);
+                } else {
+                    double_check.setBackgroundResource(R.drawable.custom_button_wrong);
+                }
                 break;
             case R.id.birth_date:
                 setCorrectStyle(editText, birth_date_verify);
                 break;
+
         }
-        if(email_verify && password_verify && name_verify && birth_date_verify)
-            buttonClickable();
 
     }
-    public void setCorrectStyle (TextView textView, Boolean isCorrect) {
-        if (isCorrect) {
+
+    /**
+     *
+     * @param textView : EditText
+     * @param varify : 해당 EditText의 유효성 검사
+     */
+    public void setCorrectStyle (TextView textView, boolean varify) {
+        if (varify) {
             // 조건 충족 시 초록색 밑선
             textView.setBackgroundResource(R.drawable.custom_underline_correct);
             // 공백일 경우 (입력 후 지웠을 경우 포함) 기존 밑선
         } else if(textView.getText().toString().equals("")) {
             textView.setBackgroundResource(R.drawable.custom_underline);
             // 조건 불충족 시 빨간색 밑선
-        }else {
+        } else {
             textView.setBackgroundResource(R.drawable.custom_underline_wrong);
         }
     }
 
-    public void buttonClickable() {
-            submit.setClickable(true);
-            submit.setBackgroundResource(R.drawable.custom_button_submit);
+    /**
+     * 약관 동의 알고리즘
+     * @param checkBox : 약관 동의
+     */
+    private void onCheckChanged(CheckBox checkBox) {
+        if (checkBox.getId() == R.id.agree_all_terms) {
+            if (all_agree_box.isChecked()) {
+                agree_terms.setChecked(true);
+                agree_personal_info.setChecked(true);
+            } else {
+                agree_terms.setChecked(false);
+                agree_personal_info.setChecked(false);
+            }
+        }
+        all_agree_box.setChecked(agree_terms.isChecked() && agree_personal_info.isChecked());
     }
+
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
 
 
 }
