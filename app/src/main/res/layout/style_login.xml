@@ -263,7 +263,7 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/custom_button_wrong"
             android:clickable="false"
-            android:id="@+id/submit"
+            android:id="@+id/register"
             />
     </RelativeLayout>
     <!-- End Sign Up Modal-->

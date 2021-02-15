@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,10 +22,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Routine extends Fragment {
+    FirebaseAuth fAuth;
 
     // 설문조사 탭 (나이, 생일, 달력 창)
     TextView AgeView, birthDateView;
@@ -52,7 +60,7 @@ public class Routine extends Fragment {
     final String NAME_VALIDATION = "^[a-zA-Z]*$";
     Pattern pattern;
     Matcher matcher;
-    Button double_check, submit;
+    Button double_check, register;
     // 로그인 모달 창
     Dialog dialog;
 
@@ -71,6 +79,9 @@ public class Routine extends Fragment {
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
         RelativeLayout routinePage = requireView().findViewById(R.id.routine_page);
         routinePage.setOnClickListener(v -> isLogined(false));
+
+
+
     }
     // TextView 변경 실시간 화
     public void InitializeView() {
@@ -141,7 +152,30 @@ public class Routine extends Fragment {
             birth_date = dialog.findViewById(R.id.birth_date);
             email = dialog.findViewById(R.id.email);
             double_check = dialog.findViewById(R.id.btn_double_check);
-            submit = dialog.findViewById(R.id.submit);
+            register = dialog.findViewById(R.id.register);
+
+            fAuth = FirebaseAuth.getInstance();
+
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String dataEmail = email.getText().toString().trim();
+                    String dataPassword = password.getText().toString().trim();
+                    // firebase에 등록
+
+                    fAuth.createUserWithEmailAndPassword(dataEmail,dataPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()) {
+                                Toast.makeText(getContext(), "User Created.", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getContext(), MainActivity.class));
+                            } else {
+                                Toast.makeText(getContext(), "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            });
 
             email.addTextChangedListener(new GenericTextWatcher(email));
             password.addTextChangedListener(new GenericTextWatcher(password));
@@ -266,7 +300,7 @@ public class Routine extends Fragment {
         // 확인식
         boolean email_verify, password_verify, name_verify, birth_date_verify;
         // Email 유효성 검사
-        email_verify = input.matches(EMAIL_VALIDATION) && s.length() >= 6  && s.length() <= 15;
+        email_verify = input.matches(EMAIL_VALIDATION) && s.length() >= 6  && s.length() <= 25;
         // 비밀 번호 유효성 검사
         password_verify = matcher.matches();
         // 이름 유효성 검사
@@ -350,9 +384,9 @@ public class Routine extends Fragment {
         nick_name_verified = nick_name.getText().toString().trim().matches(NAME_VALIDATION) && nick_name.getEditableText().length() > 2;
         birth_date_verifed = !birth_date.getText().toString().trim().equals("");
         if ( email_verified && password_verified && name_verified && nick_name_verified && birth_date_verifed && agree_terms.isChecked() && agree_personal_info.isChecked()) {
-            submit.setBackgroundResource(R.drawable.custom_button_submit);
+            register.setBackgroundResource(R.drawable.custom_button_submit);
         } else {
-            submit.setBackgroundResource(R.drawable.custom_button_wrong);
+            register.setBackgroundResource(R.drawable.custom_button_wrong);
         }
     }
 
