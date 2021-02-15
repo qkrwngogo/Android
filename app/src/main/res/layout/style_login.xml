@@ -160,7 +160,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이름 입력"
+            android:hint="이름 입력 (3 - 20자 사이)"
             android:textSize="15sp"
             android:layout_below="@id/retype_password"
             android:id="@+id/name"
@@ -168,9 +168,9 @@
             android:layout_marginTop="3dp"
             android:background="@drawable/custom_underline"/>
         <EditText
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="닉네임 (3자 이상)"
+            android:hint="닉네임 (3 - 20자 사이)"
             android:textSize="15sp"
             android:layout_below="@id/name"
             android:id="@+id/nick_name"
@@ -192,9 +192,9 @@
             android:clickable="false"
             android:layout_toEndOf="@id/nick_name" />
         <EditText
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="생년월일"
+            android:hint="생년월일 (mm/dd/yyyy)"
             android:textSize="15sp"
             android:layout_below="@id/nick_name"
             android:id="@+id/birth_date"

@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +40,8 @@ public class Routine extends Fragment {
     CheckBox all_agree_box, agree_terms, agree_personal_info;
     TextView email, password, retype_password, name, nick_name, birth_date;
     // gmail 정규식
-    // final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
-    final String EMAIL_VALIDATION = "^[a-z]*$";
+    final String EMAIL_VALIDATION = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@gmail.com";
+    //final String EMAIL_VALIDATION = "^[a-z]*$";
     // 비밀번호 숫자 문자 특문 2가지 이상 선택 정규식
     final String PASSWORD_VALIDATION = "^" +
             "(?=.*[!@#$%^&+=])" +     // 최소 1개 이상 특수문자
@@ -68,8 +69,8 @@ public class Routine extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
-        Button routineBtn = requireView().findViewById(R.id.routine);
-        routineBtn.setOnClickListener(v -> isLogined(false));
+        RelativeLayout routinePage = requireView().findViewById(R.id.routine_page);
+        routinePage.setOnClickListener(v -> isLogined(false));
     }
     // TextView 변경 실시간 화
     public void InitializeView() {
@@ -104,6 +105,10 @@ public class Routine extends Fragment {
         return age;
     }
 
+
+    // ************************    style_login 페이지 영역    ************************
+
+
     /**
      * 로그인 여부 확인
      * @param option : 로그인 여부
@@ -112,6 +117,7 @@ public class Routine extends Fragment {
     public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
+            return;
         } else {
             // 로그인 안되어있는 경우
             // 모달창 내부 버튼 설정
@@ -260,11 +266,11 @@ public class Routine extends Fragment {
         // 확인식
         boolean email_verify, password_verify, name_verify, birth_date_verify;
         // Email 유효성 검사
-        email_verify = input.matches(EMAIL_VALIDATION) && s.length() > 5;
+        email_verify = input.matches(EMAIL_VALIDATION) && s.length() >= 6  && s.length() <= 15;
         // 비밀 번호 유효성 검사
         password_verify = matcher.matches();
         // 이름 유효성 검사
-        name_verify = input.matches(NAME_VALIDATION) && s.length() > 2;
+        name_verify = input.matches(NAME_VALIDATION) && s.length() >= 2 && s.length() <= 20;
         // 생년월일 유효성 검사
         birth_date_verify = !input.equals("");
         switch (editText.getId()) {
@@ -335,6 +341,7 @@ public class Routine extends Fragment {
         inputMethodManager.hideSoftInputFromWindow(dialog.getWindow().getDecorView().getWindowToken(), 0);
     }
 
+    // 버튼 활성화
     public void buttonVisible() {
         boolean email_verified, password_verified, name_verified, nick_name_verified, birth_date_verifed;
         email_verified = email.getText().toString().trim().matches(EMAIL_VALIDATION) && email.getEditableText().length() > 5;
