@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "954471510136",
+    "project_id": "personal-gym-210122",
+    "storage_bucket": "personal-gym-210122.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954471510136:android:d4fc0c4fcdfa1c27e27d8d",
+        "android_client_info": {
+          "package_name": "com.example.originaltest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954471510136-tl3usvjiim6m8qbe4ro1f1pb88qhaqsp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe_oagxzJ6J-wHVUsRJE6RNZX9iLOo2l0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954471510136-tl3usvjiim6m8qbe4ro1f1pb88qhaqsp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
