@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:id="@+id/sign_in_page"
-        android:visibility="invisible"
+        android:visibility="visible"
         >
 
         <ImageView
@@ -115,7 +115,7 @@
         android:layout_gravity="center"
         android:id="@+id/sign_up_page"
         android:padding="10dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         >
         <TextView
             android:layout_width="wrap_content"

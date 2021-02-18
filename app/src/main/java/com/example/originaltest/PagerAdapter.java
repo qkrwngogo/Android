@@ -7,14 +7,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 4;
     public PagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
 
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return 4;
     }
 
     @NonNull
@@ -29,9 +28,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return Record.newInstance();
             case 3:
                 return Profile.newInstance();
-            default:
-                return null;
         }
+        return null;
     }
 
 }

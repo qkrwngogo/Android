@@ -16,8 +16,7 @@ import androidx.fragment.app.Fragment;
 public class Exercise extends Fragment {
 
     public static Exercise newInstance () {
-        Exercise exercise = new Exercise();
-        return exercise;
+        return new Exercise();
     }
 
     @Nullable

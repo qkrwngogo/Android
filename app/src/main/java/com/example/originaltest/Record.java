@@ -12,8 +12,7 @@ import androidx.fragment.app.Fragment;
 public class Record extends Fragment {
 
     public static Record newInstance () {
-        Record record = new Record();
-        return record;
+        return new Record();
     }
 
     @Nullable

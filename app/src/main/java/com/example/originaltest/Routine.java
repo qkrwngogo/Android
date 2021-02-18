@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,20 +28,28 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Routine extends Fragment {
     FirebaseAuth fAuth;
-
+    FirebaseFirestore fStore;
+    String userID;
     // 설문조사 탭 (나이, 생일, 달력 창)
     TextView AgeView, birthDateView;
     DatePickerDialog datePickerDialog;
@@ -76,11 +85,13 @@ public class Routine extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        fAuth = FirebaseAuth.getInstance();
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
         RelativeLayout routinePage = requireView().findViewById(R.id.routine_page);
-        routinePage.setOnClickListener(v -> isLogined(false));
+        routinePage.setOnClickListener(v -> isLogined(fAuth.getCurrentUser() != null));
+        RecyclerView customRoutine = (RecyclerView)requireView().findViewById(R.id.customRoutine);
 
-
+        final View customRoutineHeader = getLayoutInflater().inflate(R.layout.custom_routine_header, null, false);
 
     }
     // TextView 변경 실시간 화
@@ -128,7 +139,8 @@ public class Routine extends Fragment {
     public void isLogined (Boolean option) {
         if(option) {
             //로그인 되어있는 경우
-            return;
+            RelativeLayout routinePage = requireView().findViewById(R.id.routine_page);
+            routinePage.setOnClickListener(null);
         } else {
             // 로그인 안되어있는 경우
             // 모달창 내부 버튼 설정
@@ -136,6 +148,32 @@ public class Routine extends Fragment {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             dialog.setContentView(R.layout.style_login);
+
+            // 로그인
+            Button loginBtn;
+            loginBtn = dialog.findViewById(R.id.btn_sign_in);
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditText email = dialog.findViewById(R.id.txt_userID);
+                    EditText password = dialog.findViewById(R.id.txt_password);
+                    String userEmail = email.getText().toString().trim();
+                    String userPassword = password.getText().toString().trim();
+                    fAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            //로그인 성공
+                            dialog.dismiss();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // 로그인 실패
+                        }
+                    });
+                }
+            });
+
             // 회원 가입 버튼 클릭시 창 이동
             Button signUpBtn = dialog.findViewById(R.id.btn_sign_up);
             signUpBtn.setOnClickListener(v1 -> {
@@ -154,26 +192,39 @@ public class Routine extends Fragment {
             double_check = dialog.findViewById(R.id.btn_double_check);
             register = dialog.findViewById(R.id.register);
 
-            fAuth = FirebaseAuth.getInstance();
+
 
             register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String dataEmail = email.getText().toString().trim();
                     String dataPassword = password.getText().toString().trim();
+                    String dataName = name.getText().toString();
+                    String dataNickName = nick_name.getText().toString().trim();
+                    String dataBirthDate = birth_date.getText().toString().trim();
                     // firebase에 등록
 
                     fAuth.createUserWithEmailAndPassword(dataEmail,dataPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
+                                fStore = FirebaseFirestore.getInstance();
                                 Toast.makeText(getContext(), "User Created.", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getContext(), MainActivity.class));
+                                userID = fAuth.getCurrentUser().getUid();
+                                DocumentReference documentReference = fStore.collection("User Info").document(userID);
+                                Map<String,Object> user = new HashMap<>();
+                                user.put("Email Address", dataEmail);
+                                user.put("Name", dataName);
+                                user.put("Nick Name", dataNickName);
+                                user.put("Birth Date", dataBirthDate);
+                                documentReference.set(user);
+                                dialog.dismiss();
                             } else {
                                 Toast.makeText(getContext(), "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
+
                 }
             });
 

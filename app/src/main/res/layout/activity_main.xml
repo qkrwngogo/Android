@@ -104,12 +104,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/transparent"
-        android:text="home"
         app:layout_constraintBottom_toTopOf="@id/hor_guideline2"
         app:layout_constraintEnd_toStartOf="@id/ver_guideline2"
         app:layout_constraintStart_toEndOf="@id/ver_guideline1"
         app:layout_constraintTop_toBottomOf="@id/hor_guideline1"
         app:srcCompat="@drawable/ic_bar_home" />
+
+    <ImageButton
+        android:id="@+id/logout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/hor_guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/ver_guideline3"
+        app:layout_constraintStart_toStartOf="@+id/ver_guideline2"
+        app:layout_constraintTop_toTopOf="@+id/hor_guideline1"
+        android:background="@color/transparent"
+        app:srcCompat="@drawable/ic_logout"
+        android:visibility="invisible"/>
 
     <ImageButton
         android:id="@+id/menu"
@@ -183,6 +195,7 @@
             android:layout_marginVertical="@dimen/layout_vertical"
             android:clipChildren="false"
             android:clipToPadding="false" />
+
     </FrameLayout>
 
 
