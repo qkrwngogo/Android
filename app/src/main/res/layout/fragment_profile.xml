@@ -5,299 +5,464 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Profile">
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
-        <ImageButton
-            android:id="@+id/profileImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            />
-
-        <!-- Tab menu -->
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignBottom="@id/profileImage"
-            android:layout_marginLeft="-15dp"
-            android:layout_marginBottom="-15dp"
-            android:layout_toRightOf="@id/profileImage"
-            android:background="@drawable/plus" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profileTab"
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profileImage">
-            <com.google.android.material.tabs.TabItem
+            android:layout_height="match_parent">
+            <ImageButton
+                android:id="@+id/profileImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                />
+
+            <!-- Tab menu -->
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@id/profileImage"
+                android:layout_marginLeft="-15dp"
+                android:layout_marginBottom="-15dp"
+                android:layout_toRightOf="@id/profileImage"
+                android:background="@drawable/plus" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/profileTab"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="내 정보"/>
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="운동 정보"/>
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="운동 도구"/>
-        </com.google.android.material.tabs.TabLayout>
-
-        <!-- Container View -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/profileTab">
-            <!-- 내 정보 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="invisible">
-
-            </RelativeLayout>
-
-            <!-- 운동 정보 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="invisible">
-
-            </RelativeLayout>
-
-            <!-- 운동 도구 -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                android:layout_marginTop="15dp">
-
-
-
-                <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-                    android:id="@+id/cards"
+                android:layout_below="@id/profileImage">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내 정보"/>
+                <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="32dp"
-                    app:alignItems="center">
+                    android:text="운동 정보"/>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="운동 도구"/>
+            </com.google.android.material.tabs.TabLayout>
 
-                    <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                        android:id="@+id/card1"
-                        android:layout_width="0dp"
+            <!-- Container View -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/profileTab">
+                <!-- 내 정보 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible">
+
+                </RelativeLayout>
+
+                <!-- 운동 정보 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="invisible">
+
+                </RelativeLayout>
+
+                <!-- 운동 도구 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:layout_marginTop="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/line1"
+                        android:orientation="vertical">
+
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                            android:id="@+id/themedButtonGroup"
+                            android:layout_width="match_parent"
+                            app:toggle_requiredAmount="0"
+                            app:toggle_selectableAmount="3"
+                            android:layout_height="155dp"
+                            android:layout_marginHorizontal="32dp"
+                            app:alignItems="center">
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:id="@+id/btnMultipleChoice"
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                app:layout_flexGrow="1"
+                                android:gravity="center"
+                                app:toggle_icon="@drawable/ic_logout"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n     BarBell     "
+                                app:toggle_textGravity="bottom|center"/>
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:id="@+id/btnTyped"
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                app:layout_flexGrow="1"
+                                android:gravity="center"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n DumbBell "
+                                app:toggle_textGravity="bottom|center" />
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:id="@+id/btnMemory"
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                app:layout_flexGrow="1"
+                                android:gravity="center"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n      Chair      "
+                                app:toggle_textGravity="bottom|center"/>
+
+
+                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/line2"
+                        android:layout_below="@id/line1"
+                        android:orientation="vertical">
+
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="155dp"
+                            app:toggle_requiredAmount="0"
+                            app:toggle_selectableAmount="3"
+                            android:layout_marginHorizontal="32dp"
+                            app:alignItems="center">
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                android:gravity="center"
+                                app:layout_flexGrow="1"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\nFoam\n      Roller      "
+                                app:toggle_textGravity="bottom|center" />
+
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                app:layout_flexGrow="1"
+                                android:gravity="center"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n KettleBell "
+                                app:toggle_textGravity="bottom|center" />
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                android:gravity="center"
+                                app:layout_flexGrow="1"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n  Gym Ball  "
+                                app:toggle_textGravity="bottom|center" />
+
+                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:id="@+id/line3"
+                        android:layout_below="@id/line2"
+                        android:orientation="vertical">
+
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="155dp"
+                            app:toggle_requiredAmount="0"
+                            app:toggle_selectableAmount="3"
+                            android:layout_marginHorizontal="32dp"
+                            app:alignItems="center">
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                android:gravity="center"
+                                app:layout_flexGrow="1"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\n Pull-up Bar "
+                                app:toggle_textGravity="bottom|center" />
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                android:gravity="center"
+                                app:layout_flexGrow="1"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text="No\nTubing\n       Band       "
+                                app:toggle_textGravity="bottom|center" />
+
+                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                                android:layout_width="0dp"
+                                android:layout_height="145dp"
+                                android:gravity="center"
+                                app:layout_flexGrow="1"
+                                app:toggle_selectedTextColor="@android:color/white"
+                                app:toggle_selectedBackgroundColor="#5e6fed"
+                                app:toggle_iconGravity="top|center"
+                                app:toggle_iconPaddingTop="15dp"
+                                app:toggle_iconPaddingHorizontal="15dp"
+                                app:toggle_textPaddingBottom="20dp"
+                                app:toggle_text=""
+                                app:toggle_textGravity="bottom|center"
+                                android:visibility="invisible"/>
+
+                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+                    </LinearLayout>
+
+                    <!--
+                    <ImageView
+                        android:id="@+id/barbellImage"
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
-                        app:layout_flexGrow="1"
-                        app:toggle_selectedTextColor="@android:color/white"
-                        app:toggle_selectedBackgroundColor="#5e6fed"
-                        app:toggle_iconGravity="top|center"
-                        app:toggle_iconPaddingTop="15dp"
-                        app:toggle_iconPaddingHorizontal="15dp"
-                        app:toggle_textPaddingBottom="20dp"
-                        app:toggle_text="Multiple choice"
-                        app:toggle_textGravity="bottom|center" />
+                        android:background="@color/black"/>
+                    <ToggleButton
+                        android:id="@+id/barbellToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_toRightOf="@id/barbellImage"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:textOn="Bar Bell"
+                        android:textOff="No\nBar Bell"
+                        android:layout_toEndOf="@id/barbellImage"
+                        android:textAllCaps="false"/>
 
-                    <!-- ... -->
+                    <ImageView
+                        android:id="@+id/chairImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:background="@color/black"
+                        android:layout_marginEnd="100dp" />
+                    <ToggleButton
+                        android:id="@+id/chairToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textOn="Chair"
+                        android:textOff="No\nChair"
+                        android:textAllCaps="false"/>
 
-                </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+                    <ImageView
+                        android:id="@+id/dumbbellImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:layout_below="@id/barbellImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/dumbbellToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_toRightOf="@id/dumbbellImage"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:textOn="Dumb Bell"
+                        android:textOff="No\nDumb Bell"
+                        android:layout_toEndOf="@id/dumbbellImage"
+                        android:layout_below="@id/barbellToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
 
-                <!--
-                <ImageView
-                    android:id="@+id/barbellImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/black"/>
-                <ToggleButton
-                    android:id="@+id/barbellToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_toRightOf="@id/barbellImage"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:textOn="Bar Bell"
-                    android:textOff="No\nBar Bell"
-                    android:layout_toEndOf="@id/barbellImage"
-                    android:textAllCaps="false"/>
+                    <ImageView
+                        android:id="@+id/foamrollerImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:background="@color/black"
+                        android:layout_marginEnd="100dp"
+                        android:layout_below="@id/chairImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/foamrollerToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textOn="Foam Roller"
+                        android:textOff="No\nFoam Roller"
+                        android:layout_below="@id/chairToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
 
-                <ImageView
-                    android:id="@+id/chairImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="100dp"
-                    android:background="@color/black"
-                    android:layout_marginEnd="100dp" />
-                <ToggleButton
-                    android:id="@+id/chairToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textOn="Chair"
-                    android:textOff="No\nChair"
-                    android:textAllCaps="false"/>
+                    <ImageView
+                        android:id="@+id/kettlebellImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:layout_below="@id/dumbbellImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/kettlebellToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_toRightOf="@id/dumbbellImage"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:textOn="Kettle Bell"
+                        android:textOff="No\nKettle Bell"
+                        android:layout_toEndOf="@id/dumbbellImage"
+                        android:layout_below="@id/dumbbellToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
 
-                <ImageView
-                    android:id="@+id/dumbbellImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/black"
-                    android:layout_below="@id/barbellImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/dumbbellToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_toRightOf="@id/dumbbellImage"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:textOn="Dumb Bell"
-                    android:textOff="No\nDumb Bell"
-                    android:layout_toEndOf="@id/dumbbellImage"
-                    android:layout_below="@id/barbellToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
+                    <ImageView
+                        android:id="@+id/gymballImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:background="@color/black"
+                        android:layout_marginEnd="100dp"
+                        android:layout_below="@id/foamrollerImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/gymballToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textOn="Gym Ball"
+                        android:textOff="No\nGym Ball"
+                        android:layout_below="@id/foamrollerToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
 
-                <ImageView
-                    android:id="@+id/foamrollerImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="100dp"
-                    android:background="@color/black"
-                    android:layout_marginEnd="100dp"
-                    android:layout_below="@id/chairImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/foamrollerToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textOn="Foam Roller"
-                    android:textOff="No\nFoam Roller"
-                    android:layout_below="@id/chairToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
+                    <ImageView
+                        android:id="@+id/pullupbarImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:layout_below="@id/kettlebellImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/pullupbarToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_toRightOf="@id/dumbbellImage"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:textOn="Pull-up Bar"
+                        android:textOff="No\nPull-up Bar"
+                        android:layout_toEndOf="@id/dumbbellImage"
+                        android:layout_below="@id/kettlebellToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
 
-                <ImageView
-                    android:id="@+id/kettlebellImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/black"
-                    android:layout_below="@id/dumbbellImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/kettlebellToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_toRightOf="@id/dumbbellImage"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:textOn="Kettle Bell"
-                    android:textOff="No\nKettle Bell"
-                    android:layout_toEndOf="@id/dumbbellImage"
-                    android:layout_below="@id/dumbbellToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
+                    <ImageView
+                        android:id="@+id/tubingbandImage"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="100dp"
+                        android:background="@color/black"
+                        android:layout_marginEnd="100dp"
+                        android:layout_below="@id/gymballImage"
+                        android:layout_marginTop="15dp"/>
+                    <ToggleButton
+                        android:id="@+id/tubingbandToggle"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/white"
+                        android:lineHeight="20dp"
+                        android:background="@drawable/togglebutton_selector"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textOn="Tubing Band"
+                        android:textOff="No\nTubing Band"
+                        android:layout_below="@id/gymballToggle"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="15dp"/>
+                    -->
 
-                <ImageView
-                    android:id="@+id/gymballImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="100dp"
-                    android:background="@color/black"
-                    android:layout_marginEnd="100dp"
-                    android:layout_below="@id/foamrollerImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/gymballToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textOn="Gym Ball"
-                    android:textOff="No\nGym Ball"
-                    android:layout_below="@id/foamrollerToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
-
-                <ImageView
-                    android:id="@+id/pullupbarImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@color/black"
-                    android:layout_below="@id/kettlebellImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/pullupbarToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_toRightOf="@id/dumbbellImage"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:textOn="Pull-up Bar"
-                    android:textOff="No\nPull-up Bar"
-                    android:layout_toEndOf="@id/dumbbellImage"
-                    android:layout_below="@id/kettlebellToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
-
-                <ImageView
-                    android:id="@+id/tubingbandImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="100dp"
-                    android:background="@color/black"
-                    android:layout_marginEnd="100dp"
-                    android:layout_below="@id/gymballImage"
-                    android:layout_marginTop="15dp"/>
-                <ToggleButton
-                    android:id="@+id/tubingbandToggle"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/white"
-                    android:lineHeight="20dp"
-                    android:background="@drawable/togglebutton_selector"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textOn="Tubing Band"
-                    android:textOff="No\nTubing Band"
-                    android:layout_below="@id/gymballToggle"
-                    android:textAllCaps="false"
-                    android:layout_marginTop="15dp"/>
-                -->
-
-            </RelativeLayout>
-        </FrameLayout>
-    </RelativeLayout>
-
+                </RelativeLayout>
+            </FrameLayout>
+        </RelativeLayout>
+    </ScrollView>
 </FrameLayout>
