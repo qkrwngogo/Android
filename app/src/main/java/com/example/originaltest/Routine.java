@@ -4,13 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +35,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,9 +82,9 @@ public class Routine extends Fragment {
         // 루틴 버튼 클릭 시 로그인 모달창 띄우기
         RelativeLayout routinePage = requireView().findViewById(R.id.routine_page);
         routinePage.setOnClickListener(v -> isLogined(fAuth.getCurrentUser() != null));
-        RecyclerView customRoutine = (RecyclerView)requireView().findViewById(R.id.customRoutine);
+        // RecyclerView customRoutine = (RecyclerView)requireView().findViewById(R.id.customRoutine);
 
-        final View customRoutineHeader = getLayoutInflater().inflate(R.layout.custom_routine_header, null, false);
+        // final View customRoutineHeader = getLayoutInflater().inflate(R.layout.custom_routine_header, null, false);
 
     }
     // TextView 변경 실시간 화
@@ -152,26 +145,18 @@ public class Routine extends Fragment {
             // 로그인
             Button loginBtn;
             loginBtn = dialog.findViewById(R.id.btn_sign_in);
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText email = dialog.findViewById(R.id.txt_userID);
-                    EditText password = dialog.findViewById(R.id.txt_password);
-                    String userEmail = email.getText().toString().trim();
-                    String userPassword = password.getText().toString().trim();
-                    fAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            //로그인 성공
-                            dialog.dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // 로그인 실패
-                        }
-                    });
-                }
+            loginBtn.setOnClickListener(v -> {
+                EditText email = dialog.findViewById(R.id.txt_userID);
+                EditText password = dialog.findViewById(R.id.txt_password);
+                String userEmail = email.getText().toString().trim();
+                String userPassword = password.getText().toString().trim();
+                fAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnSuccessListener(authResult -> {
+                    //로그인 성공
+                    ((MainActivity)MainActivity.mContext).updateViewPager();
+                    dialog.dismiss();
+                }).addOnFailureListener(e -> {
+                    // 로그인 실패
+                });
             });
 
             // 회원 가입 버튼 클릭시 창 이동
@@ -194,38 +179,34 @@ public class Routine extends Fragment {
 
 
 
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String dataEmail = email.getText().toString().trim();
-                    String dataPassword = password.getText().toString().trim();
-                    String dataName = name.getText().toString();
-                    String dataNickName = nick_name.getText().toString().trim();
-                    String dataBirthDate = birth_date.getText().toString().trim();
-                    // firebase에 등록
+            register.setOnClickListener(v -> {
+                String dataEmail = email.getText().toString().trim();
+                String dataPassword = password.getText().toString().trim();
+                String dataName = name.getText().toString();
+                String dataNickName = nick_name.getText().toString().trim();
+                String dataBirthDate = birth_date.getText().toString().trim();
 
-                    fAuth.createUserWithEmailAndPassword(dataEmail,dataPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
-                                fStore = FirebaseFirestore.getInstance();
-                                Toast.makeText(getContext(), "User Created.", Toast.LENGTH_SHORT).show();
-                                userID = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReference = fStore.collection("User Info").document(userID);
-                                Map<String,Object> user = new HashMap<>();
-                                user.put("Email Address", dataEmail);
-                                user.put("Name", dataName);
-                                user.put("Nick Name", dataNickName);
-                                user.put("Birth Date", dataBirthDate);
-                                documentReference.set(user);
-                                dialog.dismiss();
-                            } else {
-                                Toast.makeText(getContext(), "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
 
-                }
+
+                // firebase에 등록
+
+                fAuth.createUserWithEmailAndPassword(dataEmail,dataPassword).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        fStore = FirebaseFirestore.getInstance();
+                        Toast.makeText(getContext(), "User Created.", Toast.LENGTH_SHORT).show();
+                        userID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+                        DocumentReference documentReference = fStore.collection("User Info").document(userID);
+                        Map<String,Object> user = new HashMap<>();
+                        user.put("Email Address", dataEmail);
+                        user.put("Name", dataName);
+                        user.put("Nick Name", dataNickName);
+                        user.put("Birth Date", dataBirthDate);
+                        documentReference.set(user);
+                        ((MainActivity)MainActivity.mContext).updateViewPager();
+                        dialog.dismiss();
+                    }
+                });
+
             });
 
             email.addTextChangedListener(new GenericTextWatcher(email));
@@ -355,7 +336,7 @@ public class Routine extends Fragment {
         // 비밀 번호 유효성 검사
         password_verify = matcher.matches();
         // 이름 유효성 검사
-        name_verify = input.matches(NAME_VALIDATION) && s.length() >= 2 && s.length() <= 20;
+        name_verify = input.matches(NAME_VALIDATION) && s.length() >= 3 && s.length() <= 20;
         // 생년월일 유효성 검사
         birth_date_verify = !input.equals("");
         switch (editText.getId()) {
@@ -440,8 +421,6 @@ public class Routine extends Fragment {
             register.setBackgroundResource(R.drawable.custom_button_wrong);
         }
     }
-
-
 
 
 }
