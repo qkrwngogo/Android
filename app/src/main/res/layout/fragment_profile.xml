@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Profile">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -74,6 +75,34 @@
                 android:visibility="visible"
                 android:layout_marginTop="15dp">
 
+
+
+                <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                    android:id="@+id/cards"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="32dp"
+                    app:alignItems="center">
+
+                    <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                        android:id="@+id/card1"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        app:layout_flexGrow="1"
+                        app:toggle_selectedTextColor="@android:color/white"
+                        app:toggle_selectedBackgroundColor="#5e6fed"
+                        app:toggle_iconGravity="top|center"
+                        app:toggle_iconPaddingTop="15dp"
+                        app:toggle_iconPaddingHorizontal="15dp"
+                        app:toggle_textPaddingBottom="20dp"
+                        app:toggle_text="Multiple choice"
+                        app:toggle_textGravity="bottom|center" />
+
+                    <!-- ... -->
+
+                </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+
+                <!--
                 <ImageView
                     android:id="@+id/barbellImage"
                     android:layout_width="50dp"
@@ -265,6 +294,7 @@
                     android:layout_below="@id/gymballToggle"
                     android:textAllCaps="false"
                     android:layout_marginTop="15dp"/>
+                -->
 
             </RelativeLayout>
         </FrameLayout>
