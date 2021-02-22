@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,15 @@ public class Routine extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Profile Fragment에 있는 데이터 값 불러오기
+        if(getArguments() != null) {
+            String equipmentString;
+            boolean equipmentBoolean;
+            equipmentString = getArguments().getString("equipmentString");
+            equipmentBoolean = getArguments().getBoolean("equipmentBoolean");
+            Log.d("*****************", "onCreateView: " + equipmentString + equipmentBoolean);
+        }
+
         return inflater.inflate(R.layout.fragment_routine, container, false);
     }
 

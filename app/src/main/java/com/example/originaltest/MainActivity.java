@@ -1,40 +1,22 @@
 package com.example.originaltest;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 import nl.joery.animatedbottombar.AnimatedBottomBar;
+import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DuoMenuView.OnMenuClickListener {
 
     FragmentStatePagerAdapter adapterViewPager;
     ImageView imageView, logo;
@@ -71,5 +53,20 @@ public class MainActivity extends AppCompatActivity {
     public void updateViewPager() {
         ViewPager container = findViewById(R.id.viewPager_container);
         Objects.requireNonNull(container.getAdapter()).notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFooterClicked() {
+
+    }
+
+    @Override
+    public void onHeaderClicked() {
+
+    }
+
+    @Override
+    public void onOptionClicked(int position, Object objectClicked) {
+
     }
 }

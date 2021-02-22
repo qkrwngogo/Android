@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +23,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
+
+import nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup;
 
 public class Profile extends Fragment {
     FirebaseAuth fAuth;
@@ -51,6 +54,12 @@ public class Profile extends Fragment {
         fstore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         downloadImageToFirebase();
+        ThemedToggleButtonGroup themedButtonGroup1 = requireView().findViewById(R.id.buttonGroup1);
+        ThemedToggleButtonGroup themedButtonGroup2 = requireView().findViewById(R.id.buttonGroup2);
+        ThemedToggleButtonGroup themedButtonGroup3 = requireView().findViewById(R.id.buttonGroup3);
+        selectedButtons(themedButtonGroup1);
+        selectedButtons(themedButtonGroup2);
+        selectedButtons(themedButtonGroup3);
         super.onViewCreated(view, savedInstanceState);
 
 
@@ -90,5 +99,21 @@ public class Profile extends Fragment {
         }
     }
 
+    public void selectedButtons(ThemedToggleButtonGroup group) {
+        group.setOnSelectListener( themedButton -> {
+            // 저장 공간 생성
+            Bundle bundle = new Bundle();
+            // 선택한 버튼의 태그명
+            bundle.putString("equipmentString", themedButton.getTag().toString());
+            // 선택한 버튼의 On/Off 여부
+            bundle.putBoolean("equipmentBoolean", themedButton.isSelected());
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            Routine routine = new Routine();
+            routine.setArguments(bundle);
+            transaction.replace(R.id.frg_routine, routine);
+            transaction.commit();
+            return null;
+        });
+    }
 
 }

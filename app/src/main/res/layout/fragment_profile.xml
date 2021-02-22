@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profilePage"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -77,195 +78,182 @@
                     android:visibility="visible"
                     android:layout_marginTop="15dp">
 
-                    <LinearLayout
+
+
+                    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                        android:id="@+id/buttonGroup1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/line1"
-                        android:orientation="vertical">
+                        app:toggle_requiredAmount="0"
+                        app:toggle_selectableAmount="3"
+                        android:layout_height="155dp"
+                        android:layout_marginHorizontal="32dp"
+                        app:alignItems="center">
 
-                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-                            android:id="@+id/themedButtonGroup"
-                            android:layout_width="match_parent"
-                            app:toggle_requiredAmount="0"
-                            app:toggle_selectableAmount="3"
-                            android:layout_height="155dp"
-                            android:layout_marginHorizontal="32dp"
-                            app:alignItems="center">
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="barBell"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            app:layout_flexGrow="1"
+                            android:gravity="center"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="BarBell"
+                            app:toggle_textGravity="bottom|center"/>
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:id="@+id/btnMultipleChoice"
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                app:layout_flexGrow="1"
-                                android:gravity="center"
-                                app:toggle_icon="@drawable/ic_logout"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n     BarBell     "
-                                app:toggle_textGravity="bottom|center"/>
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="dumbBell"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            app:layout_flexGrow="1"
+                            android:gravity="center"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="DumbBell"
+                            app:toggle_textGravity="bottom|center" />
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:id="@+id/btnTyped"
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                app:layout_flexGrow="1"
-                                android:gravity="center"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n DumbBell "
-                                app:toggle_textGravity="bottom|center" />
-
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:id="@+id/btnMemory"
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                app:layout_flexGrow="1"
-                                android:gravity="center"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n      Chair      "
-                                app:toggle_textGravity="bottom|center"/>
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="chair"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            app:layout_flexGrow="1"
+                            android:gravity="center"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="Chair"
+                            app:toggle_textGravity="bottom|center"/>
 
 
-                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
-                    </LinearLayout>
+                    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
-                    <LinearLayout
+
+
+                    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                        android:id="@+id/buttonGroup2"
+                        android:layout_below="@id/buttonGroup1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/line2"
-                        android:layout_below="@id/line1"
-                        android:orientation="vertical">
+                        android:layout_height="155dp"
+                        app:toggle_requiredAmount="0"
+                        app:toggle_selectableAmount="3"
+                        android:layout_marginHorizontal="32dp"
+                        app:alignItems="center">
 
-                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="155dp"
-                            app:toggle_requiredAmount="0"
-                            app:toggle_selectableAmount="3"
-                            android:layout_marginHorizontal="32dp"
-                            app:alignItems="center">
-
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                android:gravity="center"
-                                app:layout_flexGrow="1"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\nFoam\n      Roller      "
-                                app:toggle_textGravity="bottom|center" />
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="foamRoller"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            android:gravity="center"
+                            app:layout_flexGrow="1"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="Foam Roller"
+                            app:toggle_textGravity="bottom|center" />
 
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                app:layout_flexGrow="1"
-                                android:gravity="center"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n KettleBell "
-                                app:toggle_textGravity="bottom|center" />
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="kettleBell"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            app:layout_flexGrow="1"
+                            android:gravity="center"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="KettleBell"
+                            app:toggle_textGravity="bottom|center" />
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                android:gravity="center"
-                                app:layout_flexGrow="1"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n  Gym Ball  "
-                                app:toggle_textGravity="bottom|center" />
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="gymBall"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            android:gravity="center"
+                            app:layout_flexGrow="1"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="Gym Ball"
+                            app:toggle_textGravity="bottom|center" />
 
-                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
-                    </LinearLayout>
+                    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
-                    <LinearLayout
+
+                    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                        android:id="@+id/buttonGroup3"
+                        android:layout_below="@id/buttonGroup2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:id="@+id/line3"
-                        android:layout_below="@id/line2"
-                        android:orientation="vertical">
+                        android:layout_height="155dp"
+                        app:toggle_requiredAmount="0"
+                        app:toggle_selectableAmount="3"
+                        android:layout_marginHorizontal="32dp"
+                        app:alignItems="center">
 
-                        <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="155dp"
-                            app:toggle_requiredAmount="0"
-                            app:toggle_selectableAmount="3"
-                            android:layout_marginHorizontal="32dp"
-                            app:alignItems="center">
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="pullUpBar"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            android:gravity="center"
+                            app:layout_flexGrow="1"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="Pull-up Bar"
+                            app:toggle_textGravity="bottom|center" />
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                android:gravity="center"
-                                app:layout_flexGrow="1"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\n Pull-up Bar "
-                                app:toggle_textGravity="bottom|center" />
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:tag="tubingBand"
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            android:gravity="center"
+                            app:layout_flexGrow="1"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text="Tubing Band"
+                            app:toggle_textGravity="bottom|center" />
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                android:gravity="center"
-                                app:layout_flexGrow="1"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text="No\nTubing\n       Band       "
-                                app:toggle_textGravity="bottom|center" />
+                        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+                            android:layout_width="0dp"
+                            android:layout_height="145dp"
+                            android:gravity="center"
+                            app:layout_flexGrow="1"
+                            app:toggle_selectedTextColor="@android:color/white"
+                            app:toggle_selectedBackgroundColor="#4884D4"
+                            app:toggle_iconGravity="top|center"
+                            app:toggle_iconPaddingTop="15dp"
+                            app:toggle_iconPaddingHorizontal="15dp"
+                            app:toggle_textPaddingBottom="20dp"
+                            app:toggle_text=""
+                            app:toggle_textGravity="bottom|center"
+                            android:visibility="invisible"/>
 
-                            <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-                                android:layout_width="0dp"
-                                android:layout_height="145dp"
-                                android:gravity="center"
-                                app:layout_flexGrow="1"
-                                app:toggle_selectedTextColor="@android:color/white"
-                                app:toggle_selectedBackgroundColor="#4884D4"
-                                app:toggle_iconGravity="top|center"
-                                app:toggle_iconPaddingTop="15dp"
-                                app:toggle_iconPaddingHorizontal="15dp"
-                                app:toggle_textPaddingBottom="20dp"
-                                app:toggle_text=""
-                                app:toggle_textGravity="bottom|center"
-                                android:visibility="invisible"/>
-
-                        </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
-                    </LinearLayout>
+                    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
                     <!--
                     <ImageView

@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OriginalTest"
         android:windowSoftInputMode="stateAlwaysHidden">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/menu" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
