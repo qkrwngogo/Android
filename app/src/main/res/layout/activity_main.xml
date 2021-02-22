@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -177,26 +179,25 @@
                 android:id="@+id/logo"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@drawable/logotxt"
+                android:background="@drawable/logo_image"
                 android:layout_gravity="center"
                 />
 
         </FrameLayout>
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/layout_horizontal"
+            android:layout_marginVertical="@dimen/layout_vertical"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/layout_horizontal"
-                android:layout_marginVertical="@dimen/layout_vertical"
-                android:clipChildren="false"
-                android:clipToPadding="false" />
-
-        </FrameLayout>
-
-
+    </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

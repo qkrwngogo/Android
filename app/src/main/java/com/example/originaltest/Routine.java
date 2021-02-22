@@ -80,7 +80,7 @@ public class Routine extends Fragment {
             boolean equipmentBoolean;
             equipmentString = getArguments().getString("equipmentString");
             equipmentBoolean = getArguments().getBoolean("equipmentBoolean");
-            Log.d("*****************", "onCreateView: " + equipmentString + equipmentBoolean);
+            Log.d("*****************", "onCreateView: " + equipmentString );
         }
 
         return inflater.inflate(R.layout.fragment_routine, container, false);

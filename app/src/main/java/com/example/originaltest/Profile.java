@@ -10,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,6 +50,47 @@ public class Profile extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        TabLayout profileTab;
+        RelativeLayout userContainer, informationContainer, equipmentContainer;
+        userContainer = requireView().findViewById(R.id.userContainer);
+        informationContainer = requireView().findViewById(R.id.informationContainer);
+        equipmentContainer = requireView().findViewById(R.id.equipmentContainer);
+        profileTab = requireView().findViewById(R.id.profileTab);
+        profileTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                RelativeLayout selected = null;
+                switch (position) {
+                    case 0:
+                        selected = userContainer;
+                        informationContainer.setVisibility(View.INVISIBLE);
+                        equipmentContainer.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        selected = informationContainer;
+                        userContainer.setVisibility(View.INVISIBLE);
+                        equipmentContainer.setVisibility(View.INVISIBLE);
+                        break;
+                    case 2:
+                        selected = equipmentContainer;
+                        userContainer.setVisibility(View.INVISIBLE);
+                        informationContainer.setVisibility(View.INVISIBLE);
+                        break;
+                }
+                selected.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         profileImage = requireView().findViewById(R.id.profileImage);
 

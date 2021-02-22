@@ -39,15 +39,18 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="내 정보"/>
+                    android:text="내 정보"
+                    android:id="@+id/userTab"/>
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="운동 정보"/>
+                    android:text="운동 정보"
+                    android:id="@+id/informationTab"/>
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="운동 도구"/>
+                    android:text="운동 도구"
+                    android:id="@+id/equipmentTab"/>
             </com.google.android.material.tabs.TabLayout>
 
             <!-- Container View -->
@@ -57,14 +60,19 @@
                 android:layout_below="@id/profileTab">
                 <!-- 내 정보 -->
                 <RelativeLayout
+                    android:id="@+id/userContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="invisible">
-
+                    android:visibility="visible">
+                    <TextView
+                        android:id="@+id/userID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </RelativeLayout>
 
                 <!-- 운동 정보 -->
                 <RelativeLayout
+                    android:id="@+id/informationContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="invisible">
@@ -73,13 +81,11 @@
 
                 <!-- 운동 도구 -->
                 <RelativeLayout
+                    android:id="@+id/equipmentContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:layout_marginTop="15dp">
-
-
-
                     <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
                         android:id="@+id/buttonGroup1"
                         android:layout_width="match_parent"
@@ -254,201 +260,6 @@
                             android:visibility="invisible"/>
 
                     </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
-
-                    <!--
-                    <ImageView
-                        android:id="@+id/barbellImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@color/black"/>
-                    <ToggleButton
-                        android:id="@+id/barbellToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_toRightOf="@id/barbellImage"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:textOn="Bar Bell"
-                        android:textOff="No\nBar Bell"
-                        android:layout_toEndOf="@id/barbellImage"
-                        android:textAllCaps="false"/>
-
-                    <ImageView
-                        android:id="@+id/chairImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
-                        android:background="@color/black"
-                        android:layout_marginEnd="100dp" />
-                    <ToggleButton
-                        android:id="@+id/chairToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:textOn="Chair"
-                        android:textOff="No\nChair"
-                        android:textAllCaps="false"/>
-
-                    <ImageView
-                        android:id="@+id/dumbbellImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@color/black"
-                        android:layout_below="@id/barbellImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/dumbbellToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_toRightOf="@id/dumbbellImage"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:textOn="Dumb Bell"
-                        android:textOff="No\nDumb Bell"
-                        android:layout_toEndOf="@id/dumbbellImage"
-                        android:layout_below="@id/barbellToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-
-                    <ImageView
-                        android:id="@+id/foamrollerImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
-                        android:background="@color/black"
-                        android:layout_marginEnd="100dp"
-                        android:layout_below="@id/chairImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/foamrollerToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:textOn="Foam Roller"
-                        android:textOff="No\nFoam Roller"
-                        android:layout_below="@id/chairToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-
-                    <ImageView
-                        android:id="@+id/kettlebellImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@color/black"
-                        android:layout_below="@id/dumbbellImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/kettlebellToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_toRightOf="@id/dumbbellImage"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:textOn="Kettle Bell"
-                        android:textOff="No\nKettle Bell"
-                        android:layout_toEndOf="@id/dumbbellImage"
-                        android:layout_below="@id/dumbbellToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-
-                    <ImageView
-                        android:id="@+id/gymballImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
-                        android:background="@color/black"
-                        android:layout_marginEnd="100dp"
-                        android:layout_below="@id/foamrollerImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/gymballToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:textOn="Gym Ball"
-                        android:textOff="No\nGym Ball"
-                        android:layout_below="@id/foamrollerToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-
-                    <ImageView
-                        android:id="@+id/pullupbarImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@color/black"
-                        android:layout_below="@id/kettlebellImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/pullupbarToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_toRightOf="@id/dumbbellImage"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:textOn="Pull-up Bar"
-                        android:textOff="No\nPull-up Bar"
-                        android:layout_toEndOf="@id/dumbbellImage"
-                        android:layout_below="@id/kettlebellToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-
-                    <ImageView
-                        android:id="@+id/tubingbandImage"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="100dp"
-                        android:background="@color/black"
-                        android:layout_marginEnd="100dp"
-                        android:layout_below="@id/gymballImage"
-                        android:layout_marginTop="15dp"/>
-                    <ToggleButton
-                        android:id="@+id/tubingbandToggle"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:textSize="12sp"
-                        android:textColor="@color/white"
-                        android:lineHeight="20dp"
-                        android:background="@drawable/togglebutton_selector"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:textOn="Tubing Band"
-                        android:textOff="No\nTubing Band"
-                        android:layout_below="@id/gymballToggle"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"/>
-                    -->
-
                 </RelativeLayout>
             </FrameLayout>
         </RelativeLayout>

@@ -16,7 +16,7 @@ import nl.joery.animatedbottombar.AnimatedBottomBar;
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
 
 
-public class MainActivity extends AppCompatActivity implements DuoMenuView.OnMenuClickListener {
+public class MainActivity extends AppCompatActivity {
 
     FragmentStatePagerAdapter adapterViewPager;
     ImageView imageView, logo;
@@ -55,18 +55,5 @@ public class MainActivity extends AppCompatActivity implements DuoMenuView.OnMen
         Objects.requireNonNull(container.getAdapter()).notifyDataSetChanged();
     }
 
-    @Override
-    public void onFooterClicked() {
 
-    }
-
-    @Override
-    public void onHeaderClicked() {
-
-    }
-
-    @Override
-    public void onOptionClicked(int position, Object objectClicked) {
-
-    }
 }
